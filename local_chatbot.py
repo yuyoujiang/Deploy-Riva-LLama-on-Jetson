@@ -1,4 +1,6 @@
+import sys
 import requests
+import argparse
 import riva.client
 import riva.client.audio_io
 
@@ -31,9 +33,19 @@ class ArgsTTS():
 
 
 class ChatBot():
-    def __init__(self) -> None:
+    def __init__(self, args) -> None:
+
+        if args.list_input_devices:
+            riva.client.audio_io.list_input_devices()
+            sys.exit()
+        if args.list_output_devices:
+            riva.client.audio_io.list_output_devices()
+            sys.exit()
+
         self.args_asr = ArgsASR()
         self.args_tts = ArgsTTS()
+        self.args_asr.input_device = args.input_device
+        self.args_tts.output_device = args.output_device
 
         auth = riva.client.Auth(uri=self.args_asr.server)
         self.asr_service = riva.client.ASRService(auth)
@@ -118,7 +130,12 @@ class ChatBot():
                                     stream_mic.close()
 
                                     headers = {"Content-Type": "application/json",}
-                                    data = {'inputs': output_asr,}
+                                    data = {
+                                        'inputs': output_asr,
+                                        'parameters': {
+                                            'max_new_tokens': 50,
+                                        },
+                                    }
                                     response = requests.post(
                                         'http://192.168.49.74:8899/generate', headers=headers, json=data
                                         )
@@ -128,11 +145,6 @@ class ChatBot():
                                     output_asr = ""
                 finally:
                     pass
-
-    def search_input_device(self):
-        riva.client.audio_io.list_input_devices()
-        print(f"The default device is {self.args_asr.input_device}")
-        return 0
 
     @staticmethod
     def isinstance(text, min_length=5, min_unique_words=1):
@@ -149,6 +161,17 @@ class ChatBot():
         return True
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="",)
+    parser.add_argument("--list-input-devices", action="store_true", help="List input audio device indices.")
+    parser.add_argument("--list-output-devices", action="store_true", help="List input audio device indices.")
+    parser.add_argument("--input-device", type=int, default=25, help="Set input audio device.")
+    parser.add_argument("--output-device", type=int, default=30, help="Set output audio device.")
+    args = parser.parse_args()
+    return args
+
+
 if __name__ == '__main__':
-    chatbot = ChatBot()
+    args = parse_args()
+    chatbot = ChatBot(args)
     chatbot.run()
