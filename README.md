@@ -1,4 +1,4 @@
-# Deploy Riva and LLama on Jetson
+# Local Voice Chatbot : Deploy Riva and LLama on Jetson
 
 ## Introduction
 ![workflow](./sources/workflow.png)
