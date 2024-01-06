@@ -55,11 +55,10 @@ we can load large models in this inference service), on Jetson and use the code 
         # For example: python3 local_chatbot.py --input-device 25 --output-device 30
         ```
 
-```HTML
 <video width="320" height="240" controls>
     <source src="https://youtu.be/Nc3D-qITDoU" type="video/mp4">
 </video>
-```
+
 
 ## References
 - [build-an-ai-chatbot-using-riva-and-openai](https://www.hackster.io/wxxniubi8/build-an-ai-chatbot-using-riva-and-openai-13dc41)
