@@ -54,10 +54,7 @@ we can load large models in this inference service), on Jetson and use the code 
         python3 local_chatbot.py --input-device <your device id> --output-device <your device id>
         # For example: python3 local_chatbot.py --input-device 25 --output-device 30
         ```
-
-<video width="320" height="240" controls>
-    <source src="https://youtu.be/Nc3D-qITDoU" type="video/mp4">
-</video>
+[![](./sources/video_frame.png)](https://youtu.be/Nc3D-qITDoU)
 
 
 ## References
